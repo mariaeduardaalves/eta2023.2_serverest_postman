@@ -1,0 +1,863 @@
+{
+	"info": {
+		"_postman_id": "e08e6526-2c86-4386-b71a-8d239bdcf1cd",
+		"name": "Exercício_04",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16576570"
+	},
+	"item": [
+		{
+			"name": "Erro ao tentar excluir usuário com carrinho associado",
+			"item": [
+				{
+					"name": "/usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo _id gerado e armazená-lo como variável de ambiente\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"_id\");",
+									"    pm.expect(jsonData._id).to.be.a(\"string\");",
+									"    pm.environment.set(\"userId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Teste MEAPF\",\n  \"email\": \"testemeapf@eta2023.com.br\",\n  \"password\": \"Teste\",\n  \"administrador\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/usuarios",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuario/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo nome\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"nome\");",
+									"    pm.expect(jsonData.nome).to.eql(\"Teste MEAPF\");",
+									"    pm.expect(jsonData.nome).to.be.a(\"string\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\");",
+									"    pm.expect(jsonData.email).to.eql(\"testemeapf@eta2023.com.br\");",
+									"    pm.expect(jsonData.email).to.be.a(\"string\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"password\");",
+									"    pm.expect(jsonData.password).to.eql(\"Teste\");",
+									"    pm.expect(jsonData.password).to.be.a(\"string\");",
+									"});",
+									"",
+									"pm.test(\"Verificar se o campo administrador é true\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"administrador\");",
+									"    pm.expect(jsonData.administrador).to.eql(\"true\");",
+									"    pm.expect(jsonData.administrador).to.be.a(\"string\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo _id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"_id\");",
+									"    pm.expect(jsonData._id).to.be.a(\"string\");",
+									"    var idUser = pm.environment.get(\"userId\");",
+									"    pm.expect(jsonData._id).to.eql(idUser);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/usuarios/{{userId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\"); ",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");   ",
+									"    pm.expect(jsonData.message).to.eql(\"Login realizado com sucesso\");",
+									"})",
+									"",
+									"pm.test(\"Verificar o campo authorization e armazenar o Token do usuário como uma variável de ambiente\", function () {",
+									"var jsonData = pm.response.json();",
+									"pm.expect(jsonData).to.have.property(\"authorization\");",
+									"pm.expect(jsonData.authorization).to.be.a(\"string\");",
+									"pm.environment.set(\"adminToken\", jsonData.authorization);",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testemeapf@eta2023.com.br\",\n  \"password\": \"Teste\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/login",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");   ",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo _id do produto e armazená-lo como variável de ambiente\", function () {",
+									"var jsonData = pm.response.json();",
+									"pm.expect(jsonData).to.have.property(\"_id\");",
+									"pm.expect(jsonData._id).to.be.a(\"string\");",
+									"pm.environment.set(\"productId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n  \"nome\": \"Produto MEAPF exercício04\",\n  \"preco\": {{prodUnitPrice}},\n  \"descricao\": \"MEAPF\",\n  \"quantidade\": {{prodQtyTotal}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/produtos",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/produtos/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo nome\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"nome\");",
+									"    pm.expect(jsonData.nome).to.be.a(\"string\");",
+									"    pm.expect(jsonData.nome).to.eql(\"Produto MEAPF exercício04\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo preço\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"preco\");",
+									"    pm.expect(jsonData.preco).to.be.a(\"number\"); ",
+									"    var precoEsperado = pm.environment.get(\"prodUnitPrice\"); ",
+									"    pm.expect(jsonData.preco).to.eql(precoEsperado);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo descrição\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"descricao\");",
+									"    pm.expect(jsonData.descricao).to.be.a(\"string\");",
+									"    pm.expect(jsonData.descricao).to.eql(\"MEAPF\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo quantidade\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"quantidade\");",
+									"    pm.expect(jsonData.quantidade).to.be.a(\"number\"); ",
+									"    var quantidadeEsperada = pm.environment.get(\"prodQtyTotal\");",
+									"    pm.expect(jsonData.quantidade).to.eql(quantidadeEsperada);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo _id do produto\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"_id\");",
+									"    pm.expect(jsonData._id).to.be.a(\"string\");",
+									"    var idProduto = pm.environment.get(\"productId\");",
+									"    pm.expect(jsonData._id).to.eql(idProduto);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"prodUnitPrice\", 100);",
+									"pm.environment.set(\"prodQtyTotal\", 100);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/produtos/{{productId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"produtos",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/carrinhos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Verificar mensagem de sucesso\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");",
+									"});",
+									"",
+									"pm.test(\"Verificar o _id gerado e armazená-lo como variável de ambiente\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"_id\");",
+									"    pm.expect(jsonData._id).to.be.a(\"string\");",
+									"    pm.environment.set(\"cartId\", jsonData._id);",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"produtos\": [\n    {\n      \"idProduto\": \"{{productId}}\",\n      \"quantidade\": {{prodCartQty}}\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/carrinhos",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/carrinhos/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo idProduto quando houver produtos\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.produtos.length > 0) {",
+									"        pm.expect(jsonData.produtos[0]).to.have.property(\"idProduto\");",
+									"        pm.expect(jsonData.produtos[0].idProduto).to.be.a(\"string\");",
+									"        var idProduct = pm.environment.get(\"productId\");",
+									"        pm.expect(jsonData.produtos[0].idProduto).to.eql(idProduct);",
+									"    } else {",
+									"        pm.expect(jsonData.produtos).to.be.an(\"array\").that.is.empty;",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo quantidade quando houver produtos\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.produtos.length > 0) {",
+									"        pm.expect(jsonData.produtos[0]).to.have.property(\"quantidade\");",
+									"        pm.expect(jsonData.produtos[0].quantidade).to.be.a(\"number\");",
+									"        var quantidadeProduto = Number(pm.environment.get(\"prodCartQty\"));",
+									"        pm.expect(jsonData.produtos[0].quantidade).to.eql(quantidadeProduto);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo precoUnitario quando houver produtos\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.produtos.length > 0) {",
+									"        pm.expect(jsonData.produtos[0]).to.have.property(\"precoUnitario\");",
+									"        pm.expect(jsonData.produtos[0].precoUnitario).to.be.a(\"number\");",
+									"        var precoUnitarioProduto = Number(pm.environment.get(\"prodUnitPrice\"));",
+									"        pm.expect(jsonData.produtos[0].precoUnitario).to.eql(precoUnitarioProduto);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo precoTotal\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"precoTotal\");",
+									"    pm.expect(jsonData.precoTotal).to.be.a(\"number\");",
+									"",
+									"    var precoTotalCalculado = 0;",
+									"    jsonData.produtos.forEach(function(produto) {",
+									"        precoTotalCalculado += produto.precoUnitario * produto.quantidade;",
+									"    });",
+									"",
+									"    var precoUnitarioProduto = Number(pm.environment.get(\"prodUnitPrice\"));",
+									"    var quantidadeProduto = Number(pm.environment.get(\"prodCartQty\"));",
+									"    var precoTotalEsperado = precoUnitarioProduto * quantidadeProduto;",
+									"",
+									"    pm.expect(jsonData.precoTotal).to.eql(precoTotalEsperado);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo quantidadeTotal\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"quantidadeTotal\");",
+									"    pm.expect(jsonData.quantidadeTotal).to.be.a(\"number\");",
+									"",
+									"    var quantidadeTotalCalculada = 0;",
+									"    jsonData.produtos.forEach(function(produto) {",
+									"        quantidadeTotalCalculada += produto.quantidade;",
+									"    });",
+									"",
+									"    var quantidadeProduto = Number(pm.environment.get(\"prodCartQty\"));",
+									"    pm.expect(jsonData.quantidadeTotal).to.eql(quantidadeProduto);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo idUsuario\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"idUsuario\");",
+									"    pm.expect(jsonData.idUsuario).to.be.a(\"string\");",
+									"    var idUser = pm.environment.get(\"userId\");",
+									"    pm.expect(jsonData.idUsuario).to.eql(idUser);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo _id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"_id\");",
+									"    pm.expect(jsonData._id).to.be.a(\"string\");",
+									"    var idCart = pm.environment.get(\"cartId\");",
+									"    pm.expect(jsonData._id).to.eql(idCart);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/carrinhos/{{cartId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"carrinhos",
+								"{{cartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuarios/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Não é permitido excluir usuário com carrinho cadastrado\");",
+									"});",
+									"pm.test(\"Verificar o campo idCarrinho\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"idCarrinho\");",
+									"    pm.expect(jsonData.idCarrinho).to.be.a(\"string\");",
+									"    var idCarrinho =",
+									"        pm.environment.get(\"cartId\");",
+									"    pm.expect(jsonData.idCarrinho).to.eql(idCarrinho);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/usuarios/{{userId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Excluir Usuário Após Remover Carrinho de Compra Concluída",
+			"item": [
+				{
+					"name": "/carrinhos/concluir-compra",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");",
+									"});",
+									"//A mensagem retornada do teste \"Registro excluído com sucesso\" é diferente da proposta na API \"Registro excluído com sucesso | Nenhum registro excluído\""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{path}}/carrinhos/concluir-compra",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"carrinhos",
+								"concluir-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/carrinhos/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Carrinho não encontrado\");",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/carrinhos/{{cartId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"carrinhos",
+								"{{cartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/produto/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Registro excluído com sucesso\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");",
+									"});",
+									"//A mensagem retornada do teste \"Registro excluído com sucesso\" é diferente da proposta na API \"Registro excluído com sucesso | Nenhum registro excluído\""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{path}}/produtos/{{productId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"produtos",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/produtos/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Produto não encontrado\");",
+									"    });",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"prodUnitPrice\", 100);",
+									"pm.environment.set(\"prodQtyTotal\", 100);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/produtos/{{productId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"produtos",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuarios/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Registro excluído com sucesso | Nenhum registro excluído\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/usuarios/{{userId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuario/{_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Verificar o campo message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.message).to.eql(\"Usuário não encontrado\");",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/usuarios/{{userId}}",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
